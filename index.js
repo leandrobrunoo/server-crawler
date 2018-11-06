@@ -18,7 +18,7 @@ app.get('/placares', function (req, res) {
 
         const page = await browser.newPage();
         await page.goto('https://play.livebet.com/#/results/?lang=pt-br');
-        await page.waitFor(15000);
+        await page.waitFor(20000);
 
         const result = await page.evaluate(() => {
 
