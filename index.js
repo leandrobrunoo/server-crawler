@@ -4,7 +4,8 @@ const express = require('express');
 const PORT = process.env.PORT || 5000;
 
 app = express();
-const data = new Date();
+
+var utc = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000);
 
 app.get('/', function (req, res) {
     res.send({
@@ -14,7 +15,7 @@ app.get('/', function (req, res) {
         "endpoint": {
             "GET": "/placares"
         },
-        "Data": data
+        "Data": utc
     }
     );
 });
