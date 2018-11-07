@@ -44,13 +44,13 @@ app.get('/placares', function (req, res) {
                 for (var element of elements) {
                     if (element.innerText != 'No information available' && element.innerText != 'Void') {
                         let partida = {};
+                        partida.dados = element.innerText;
                         partida.data = element.innerText.split('\n')[0];
                         partida.campeonato = element.innerText.split('\n')[1];
                         partida.timeCasa = element.innerText.split('\n')[2].split(' - ')[0];
                         partida.timeFora = element.innerText.split('\n')[2].split(' - ')[1];
                         partida.primeiroTempo = element.innerText.split('\n')[3].split(' ')[1];
                         partida.placarFinal = element.innerText.split('\n')[3].split(' ')[0];
-                        partida.dados = element.innerText;
                         data.push(partida);
                     }
                 }
