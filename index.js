@@ -50,6 +50,7 @@ app.get('/placares', function (req, res) {
                         partida.timeFora = element.innerText.split('\n')[2].split(' - ')[1];
                         partida.primeiroTempo = element.innerText.split('\n')[3].split(' ')[1];
                         partida.placarFinal = element.innerText.split('\n')[3].split(' ')[0];
+                        partida.dados = element.innerText;
                         data.push(partida);
                     }
                 }
