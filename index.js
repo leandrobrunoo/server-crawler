@@ -4,6 +4,7 @@ const express = require('express');
 const PORT = process.env.PORT || 5000;
 
 app = express();
+const data = new Date();
 
 app.get('/', function (req, res) {
     res.send({
@@ -12,7 +13,8 @@ app.get('/', function (req, res) {
         "developer": "Leandro Bruno Teixeira",
         "endpoint": {
             "GET": "/placares"
-        }
+        },
+        "Data": data
     }
     );
 });
