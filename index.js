@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 5000;
 
 app = express();
 
-app.get('/placares', function (req, res) {
+app.get('/resultados', function (req, res) {
 
     let scrape = async () => {
         const browser = await puppeteer.launch({
@@ -24,6 +24,7 @@ app.get('/placares', function (req, res) {
 
             let data = [];
             let elements = [...document.querySelectorAll('body > div.body-wrapper.lang-pt-br.results.theme-.livebet.playlivebetcom.classic.footer-movable > div.view-container.ng-scope.results > ng-include > div > div.center-container-p > div > div.results-table-j > table > tbody > tr')]; // Select all Products
+            
             elements.shift();
 
             for (var element of elements) {
@@ -63,6 +64,33 @@ app.get('/', function (req, res) {
         }
     }
     );
+});
+
+app.get('/placares', function (req, res) {
+
+    let scrape = async () => {
+        const browser = await puppeteer.launch({
+            headless: true,
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox'
+            ]
+        });
+
+        const page = await browser.newPage();
+        await page.goto('http://crawler.betgool.com.br:8452/partidas');
+
+    let bodyHTML = await page.evaluate(() => document.body.innerHTML);
+        browser.close();
+        return bodyHTML;
+    };
+
+    scrape().then((value) => {
+        res.send(value);
+    }).catch(e => {
+        res.send(e);
+    });
+
 });
 
 // Execução do serviço
