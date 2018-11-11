@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 5000;
 
 app = express();
 
-app.get('/resultados', function (req, res) {
+app.get('/placares', function (req, res) {
 
     let scrape = async () => {
         const browser = await puppeteer.launch({
@@ -14,7 +14,11 @@ app.get('/resultados', function (req, res) {
                 '--no-sandbox',
                 '--disable-setuid-sandbox'
             ]
-        });
+        },
+       /* {
+            executablePath: 'C:/Users/Leandro/AppData/Local/Google/Chrome/Application'
+        }*/
+        );
 
         const page = await browser.newPage();
         await page.goto('https://play.livebet.com/#/results/?lang=pt-br');
@@ -64,33 +68,6 @@ app.get('/', function (req, res) {
         }
     }
     );
-});
-
-app.get('/placares', function (req, res) {
-
-    let scrape = async () => {
-        const browser = await puppeteer.launch({
-            headless: true,
-            args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox'
-            ]
-        });
-
-        const page = await browser.newPage();
-        await page.goto('http://crawler.betgool.com.br:8452/partidas');
-
-    let bodyHTML = await page.evaluate(() => document.body.innerHTML);
-        browser.close();
-        return bodyHTML;
-    };
-
-    scrape().then((value) => {
-        res.send(value);
-    }).catch(e => {
-        res.send(e);
-    });
-
 });
 
 // Execução do serviço
