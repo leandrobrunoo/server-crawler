@@ -15,9 +15,11 @@ app.get('/placares', function (req, res) {
                 '--disable-setuid-sandbox'
             ]
         },
-       /* {
+       /* 
+       {
             executablePath: 'C:/Users/Leandro/AppData/Local/Google/Chrome/Application'
-        }*/
+        }
+        */
         );
 
         const page = await browser.newPage();
