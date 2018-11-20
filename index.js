@@ -4,7 +4,6 @@ const express = require('express');
 const PORT = process.env.PORT || 5000;
 
 app = express();
-
 app.get('/placares', function (req, res) {
 
     let scrape = async () => {
