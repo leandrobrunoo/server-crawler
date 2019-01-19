@@ -4,7 +4,7 @@ const express = require('express');
 const PORT = process.env.PORT || 5000;
 
 app = express();
-app.get('/teste', function (req, res) {
+app.get('/placares', function (req, res) {
 
     let scrape = async () => {
         const browser = await puppeteer.launch({
@@ -22,7 +22,7 @@ app.get('/teste', function (req, res) {
         const page = await browser.newPage();
     //    await page.setUserAgent('5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36');
         await page.goto('https://play.livebet.com/#/results/?lang=pt-br', { waitUntil : ['load', 'domcontentloaded']});
-        await page.waitFor(20000);
+        await page.waitFor(15000);
  
         const result = await page.evaluate(() => {
 
@@ -73,7 +73,7 @@ app.get('/', function (req, res) {
     );
 });
 
-app.get('/placares', function (req, res) {
+app.get('/teste', function (req, res) {
 
     let scrape = async () => {
         const browser = await puppeteer.launch({
