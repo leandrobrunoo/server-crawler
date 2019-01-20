@@ -91,11 +91,11 @@ app.get('/teste', function (req, res) {
         const page = await browser.newPage();
         await page.goto('https://play.livebet.com/#/results/?lang=pt-br', { waitUntil : ['load', 'domcontentloaded']});
         await page.waitFor(15000);
-        console.log('Site carregado!');
+        // console.log('Site carregado!');
         
         const selectorData = 'body > div.body-wrapper.lang-pt-br.results.theme-.livebet.playlivebetcom.classic.footer-movable > div.view-container.results > ng-include > div > div.center-container-p > div > div.navigation-of-results-j > div:nth-child(1) > ul > li:nth-child(3) > div > div > div > input';
         await page.waitForSelector(selectorData);
-        console.log('Agora vou clicar!');
+        // console.log('Agora vou clicar!');
         await page.click(selectorData);
         await page.keyboard.press('ArrowLeft');
         await page.keyboard.press('Enter');
@@ -103,16 +103,14 @@ app.get('/teste', function (req, res) {
         
         const selectorPesquisar = 'body > div.body-wrapper.lang-pt-br.results.theme-.livebet.playlivebetcom.classic.footer-movable > div.view-container.results > ng-include > div > div.center-container-p > div > div.navigation-of-results-j > div.results-table-cell-j.button-container-j > button';
         await page.waitForSelector(selectorPesquisar);
-        console.log('Agora vou clicar na pesquisa!');
+        // console.log('Agora vou clicar na pesquisa!');
         await page.click(selectorPesquisar);
         await page.waitFor(10000);
 
         const result = await page.evaluate(() => {
 
             let data = [];
-            let elements = [...document.querySelectorAll('body > div.body-wrapper.lang-pt-br.results.theme-.livebet.playlivebetcom.classic.footer-movable > div.view-container.results > ng-include > div > div.center-container-p > div > div.results-table-j > table > tbody > tr')]; // Select all Products
-                                
-            console.log(elements.innerText);
+            let elements = [...document.querySelectorAll('body > div.body-wrapper.lang-pt-br.results.theme-.livebet.playlivebetcom.classic.footer-movable > div.view-container.results > ng-include > div > div.center-container-p > div > div.results-table-j > table > tbody > tr')]; // Select all Products                            
             
             elements.shift();
 
