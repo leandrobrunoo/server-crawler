@@ -77,7 +77,7 @@ app.get('/teste', function (req, res) {
 
     let scrape = async () => {
         const browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox'
@@ -105,7 +105,7 @@ app.get('/teste', function (req, res) {
         await page.waitForSelector(selectorPesquisar);
         // console.log('Agora vou clicar na pesquisa!');
         await page.click(selectorPesquisar);
-        await page.waitFor(10000);
+        await page.waitFor(20000);
 
         const result = await page.evaluate(() => {
 
