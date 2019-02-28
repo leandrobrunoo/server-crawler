@@ -1,3 +1,5 @@
 https://timleland.com/headless-chrome-on-heroku/
 
 heroku buildpacks:add https://github.com/jontewks/puppeteer-heroku-buildpack
+
+add buildpack https://buildpack-registry.s3.amazonaws.com/buildpacks/jontewks/puppeteer.tgz

@@ -64,7 +64,7 @@ app.get('/placares', function (req, res) {
 app.get('/', function (req, res) {
     res.send({
         "name": "server-crawler",
-        "version": "1.1.0",
+        "version": "1.2.0",
         "developer": "Leandro Bruno Teixeira",
         "endpoint": {
             "GET": "/placares"
