@@ -4,7 +4,7 @@ const express = require('express');
 const PORT = process.env.PORT || 5000;
 
 app = express();
-app.get('/placares', function (req, res) {
+app.get('/placares-old', function (req, res) {
 
     let scrape = async () => {
         const browser = await puppeteer.launch({
@@ -73,7 +73,7 @@ app.get('/', function (req, res) {
     );
 });
 
-app.get('/teste', function (req, res) {
+app.get('/placares', function (req, res) {
 
     let scrape = async () => {
         const browser = await puppeteer.launch({
