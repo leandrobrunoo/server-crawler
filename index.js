@@ -99,7 +99,7 @@ app.get('/teste', function (req, res) {
         await page.click(selectorData);
         await page.keyboard.press('ArrowLeft');
         await page.keyboard.press('Enter');
-        await page.waitFor(1000);
+        await page.waitFor(3000);
 
         // console.log('sport');
         const selectSport = 'body > div.body-wrapper.lang-pt-br.results.theme-.livebet.playlivebetcom.classic.footer-movable > div.view-container.results > ng-include > div > div.center-container-p > div > div.navigation-of-results-j > div:nth-child(1) > ul > li:nth-child(1) > label > div > select';
@@ -115,7 +115,7 @@ app.get('/teste', function (req, res) {
         await page.waitForSelector(selectorPesquisar);
         // console.log('Agora vou clicar na pesquisa!');
         await page.click(selectorPesquisar);
-        await page.waitFor(1000);
+        await page.waitFor(5000);
 
         const result = await page.evaluate(() => {
 
