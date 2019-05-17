@@ -77,7 +77,7 @@ app.get('/teste', function (req, res) {
 
     let scrape = async () => {
         const browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox'
@@ -90,22 +90,32 @@ app.get('/teste', function (req, res) {
 
         const page = await browser.newPage();
         await page.goto('https://play.livebet.com/#/results/?lang=pt-br', { waitUntil : ['load', 'domcontentloaded']});
-        await page.waitFor(15000);
+        await page.waitFor(12000);
         // console.log('Site carregado!');
-        
+
         const selectorData = 'body > div.body-wrapper.lang-pt-br.results.theme-.livebet.playlivebetcom.classic.footer-movable > div.view-container.results > ng-include > div > div.center-container-p > div > div.navigation-of-results-j > div:nth-child(1) > ul > li:nth-child(3) > div > div > div > input';
         await page.waitForSelector(selectorData);
         // console.log('Agora vou clicar!');
         await page.click(selectorData);
         await page.keyboard.press('ArrowLeft');
         await page.keyboard.press('Enter');
-        await page.waitFor(5000);
+        await page.waitFor(3000);
+
+        // console.log('sport');
+        const selectSport = 'body > div.body-wrapper.lang-pt-br.results.theme-.livebet.playlivebetcom.classic.footer-movable > div.view-container.results > ng-include > div > div.center-container-p > div > div.navigation-of-results-j > div:nth-child(1) > ul > li:nth-child(1) > label > div > select';
+        await page.waitForSelector(selectSport);
+        await page.click(selectSport);
+        await page.keyboard.press('PageUp');
+        await page.keyboard.press('PageUp');
+        await page.keyboard.press('PageUp');
+        await page.keyboard.press('Enter');
+        await page.waitFor(1000);
         
         const selectorPesquisar = 'body > div.body-wrapper.lang-pt-br.results.theme-.livebet.playlivebetcom.classic.footer-movable > div.view-container.results > ng-include > div > div.center-container-p > div > div.navigation-of-results-j > div.results-table-cell-j.button-container-j > button';
         await page.waitForSelector(selectorPesquisar);
         // console.log('Agora vou clicar na pesquisa!');
         await page.click(selectorPesquisar);
-        await page.waitFor(20000);
+        await page.waitFor(15000);
 
         const result = await page.evaluate(() => {
 
