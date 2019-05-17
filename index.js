@@ -64,7 +64,7 @@ app.get('/placares', function (req, res) {
 app.get('/', function (req, res) {
     res.send({
         "name": "server-crawler",
-        "version": "1.2.0",
+        "version": "1.3.0",
         "developer": "Leandro Bruno Teixeira",
         "endpoint": {
             "GET": "/placares"
@@ -99,7 +99,7 @@ app.get('/teste', function (req, res) {
         await page.click(selectorData);
         await page.keyboard.press('ArrowLeft');
         await page.keyboard.press('Enter');
-        // await page.waitFor(3000);
+        await page.waitFor(1000);
 
         // console.log('sport');
         const selectSport = 'body > div.body-wrapper.lang-pt-br.results.theme-.livebet.playlivebetcom.classic.footer-movable > div.view-container.results > ng-include > div > div.center-container-p > div > div.navigation-of-results-j > div:nth-child(1) > ul > li:nth-child(1) > label > div > select';
@@ -109,13 +109,13 @@ app.get('/teste', function (req, res) {
         await page.keyboard.press('PageUp');
         await page.keyboard.press('PageUp');
         await page.keyboard.press('Enter');
-        // await page.waitFor(1000);
+        await page.waitFor(1000);
         
         const selectorPesquisar = 'body > div.body-wrapper.lang-pt-br.results.theme-.livebet.playlivebetcom.classic.footer-movable > div.view-container.results > ng-include > div > div.center-container-p > div > div.navigation-of-results-j > div.results-table-cell-j.button-container-j > button';
         await page.waitForSelector(selectorPesquisar);
         // console.log('Agora vou clicar na pesquisa!');
         await page.click(selectorPesquisar);
-        // await page.waitFor(15000);
+        await page.waitFor(1000);
 
         const result = await page.evaluate(() => {
 
