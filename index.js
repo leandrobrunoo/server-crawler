@@ -8,7 +8,7 @@ app.get('/placares-old', function (req, res) {
 
     let scrape = async () => {
         const browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox'
@@ -77,7 +77,7 @@ app.get('/placares', function (req, res) {
 
     let scrape = async () => {
         const browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox'
