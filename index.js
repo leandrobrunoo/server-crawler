@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer');
 const express = require('express');
 
+var moment = require('moment');
 const PORT = process.env.PORT || 5000;
 
 app = express();
@@ -169,10 +170,6 @@ app.get('/placares', function (req, res) {
 
 });
 
-
-
-
-
 app.get('/msports', function (req, res) {
 
     let scrape = async () => {
@@ -213,6 +210,76 @@ app.get('/msports', function (req, res) {
 
             return data;
         });
+        browser.close();
+        return result;
+    };
+
+    scrape().then((value) => {
+    //    console.log(value);
+        res.send(value);
+    }).catch(e => {
+        res.send(e);
+    });
+
+});
+
+
+
+
+
+
+
+
+app.get('/livescore', function (req, res) {
+
+    let scrape = async () => {
+        const browser = await puppeteer.launch({
+            headless: false,
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox'
+            ]
+        }
+        );
+
+        const page = await browser.newPage();
+        await page.setViewport({ width: 1280, height: 800 });
+      
+        await page.goto('https://www.livescore.in/br/', 
+        { waitUntil : ['load', 'domcontentloaded']});
+        await page.waitFor(1500);
+        console.log('Site carregado!');
+        
+        const result = await page.evaluate(() => {
+            
+            let data = [];
+           
+            let elements = [...document.querySelectorAll('#fs > div > table > tbody > tr')];  
+            
+            for (var element of elements) {
+               if( element.innerText.split('\t')[1].replace(/(\r\n|\n|\r)/gm, '') == "Encerrado"){
+                   let partida = {};
+                   partida.data = new Date().toLocaleDateString().concat(" " + element.innerText.split('\t')[0].replace(/(\r\n|\n|\r)/gm, ''));
+                   partida.timeCasa = element.innerText.split('\t')[2].replace(/(\r\n|\n|\r)/gm, '');
+                   partida.placarFinal = element.innerText.split('\t')[3].replace(/(\r\n|\n|\r)/gm, '').replace(/\s{1,}/g, '');
+                   partida.timeFora = element.innerText.split('\t')[4].replace(/(\r\n|\n|\r)/gm, '');
+                   partida.primeiroTempo = element.innerText.split('\t')[5].replace(/(\r\n|\n|\r)/gm, '').replace(/\s{1,}/g, '');
+                   //   partida.status = element.innerText.split('\t')[1].replace(/(\r\n|\n|\r)/gm, '');
+                   
+                   partida.primeiroTempo = partida.primeiroTempo.replace('(', '');
+                   partida.primeiroTempo = partida.primeiroTempo.replace(')', '');
+                //   partida.dataHora = new Date().toLocaleDateString();
+                   partida.campeonato = '';
+                   partida.segundoTempo = '';
+    
+                   data.push(partida);
+               }
+                
+            }
+
+            return data;
+        });
+
         browser.close();
         return result;
     };
