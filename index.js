@@ -161,14 +161,16 @@ app.get('/placares', function (req, res) {
         return result;
     };
 
-    */
-
+    
     scrape().then((value) => {
         // console.log(value);
         res.send('[]');
     }).catch(e => {
         res.send(e);
     });
+       */
+
+      res.send('[]');
 
 });
 
@@ -301,7 +303,7 @@ app.get('/livescore', function (req, res) {
 
     scrape().then((value) => {
     //    console.log(value);
-    console.log("4) "+  new Date().toLocaleDateString());
+    console.log("7) "+  new Date().toString());
     /**
         console.log("1) "+  new Date().toDateString());
         console.log("2) "+  new Date().toISOString());
