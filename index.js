@@ -1,7 +1,6 @@
 const puppeteer = require('puppeteer');
 const express = require('express');
 
-var moment = require('moment');
 const PORT = process.env.PORT || 5000;
 
 app = express();
@@ -162,8 +161,8 @@ app.get('/placares', function (req, res) {
     };
 
     scrape().then((value) => {
-         console.log(value);
-        res.send(value);
+        // console.log(value);
+        res.send('[]');
     }).catch(e => {
         res.send(e);
     });
@@ -234,7 +233,7 @@ app.get('/livescore', function (req, res) {
 
     let scrape = async () => {
         const browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox'
@@ -254,6 +253,7 @@ app.get('/livescore', function (req, res) {
         await page.waitForSelector(selector);
         console.log('Agora vou clicar!');
         await page.click(selector);
+        await page.waitFor(1000);
 
         const selectorUtc = '#tzcontent > li:nth-child(9) > a';
         await page.waitForSelector(selectorUtc);
