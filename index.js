@@ -251,16 +251,16 @@ app.get('/livescore', function (req, res) {
 
         const selector = '#tzactual';
         await page.waitForSelector(selector);
-        console.log('Agora vou clicar!');
-        await page.click(selector);
+        //console.log('Agora vou clicar!');
+        //await page.click(selector);
         await page.waitFor(1000);
 
         const selectorUtc = '#tzcontent > li:nth-child(9) > a';
         await page.waitForSelector(selectorUtc);
-        console.log('Agora vou clicar UTC!');
-        await page.click(selectorUtc);
+        //console.log('Agora vou clicar UTC!');
+        //await page.click(selectorUtc);
         
-        await page.waitFor(1000);
+        //await page.waitFor(1000);
 
         const result = await page.evaluate(() => {
             
