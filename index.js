@@ -247,7 +247,7 @@ app.get('/livescore', function (req, res) {
       
         await page.goto('https://www.livescore.in/br/', 
         { waitUntil : ['load', 'domcontentloaded']});
-        await page.waitFor(1500);
+        await page.waitFor(2000);
         console.log('Site carregado!');
         
         const result = await page.evaluate(() => {
@@ -268,10 +268,10 @@ app.get('/livescore', function (req, res) {
                    
                    partida.primeiroTempo = partida.primeiroTempo.replace('(', '');
                    partida.primeiroTempo = partida.primeiroTempo.replace(')', '');
-                //   partida.dataHora = new Date().toLocaleDateString();
+                
                    partida.campeonato = '';
                    partida.segundoTempo = '';
-    
+                  
                    data.push(partida);
                }
                 
@@ -286,6 +286,16 @@ app.get('/livescore', function (req, res) {
 
     scrape().then((value) => {
     //    console.log(value);
+    /**
+        console.log("1) "+  new Date().toDateString());
+        console.log("2) "+  new Date().toISOString());
+        console.log("3) "+  new Date().toJSON());
+        console.log("4) "+  new Date().toLocaleDateString());
+        console.log("5) "+  new Date().toLocaleString());
+        console.log("6) "+  new Date().toLocaleTimeString());
+        console.log("7) "+  new Date().toString());
+        console.log("8) "+  new Date().toISOString().slice(0,10));
+         */
         res.send(value);
     }).catch(e => {
         res.send(e);
