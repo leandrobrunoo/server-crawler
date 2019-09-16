@@ -301,6 +301,7 @@ app.get('/livescore', function (req, res) {
 
     scrape().then((value) => {
     //    console.log(value);
+    console.log("4) "+  new Date().toLocaleDateString());
     /**
         console.log("1) "+  new Date().toDateString());
         console.log("2) "+  new Date().toISOString());
