@@ -76,6 +76,7 @@ app.get('/', function (req, res) {
 
 app.get('/placares', function (req, res) {
 
+    /*
     let scrape = async () => {
         const browser = await puppeteer.launch({
             headless: true,
@@ -87,9 +88,9 @@ app.get('/placares', function (req, res) {
                 '--account-consistency'
             ]
         },
-        /*{
-            executablePath: 'C:/Users/Leandro/AppData/Local/Google/Chrome/Application'
-        }*/
+        //{
+        //    executablePath: 'C:/Users/Leandro/AppData/Local/Google/Chrome/Application'
+       // }
         );
 
         const page = await browser.newPage();
@@ -159,6 +160,8 @@ app.get('/placares', function (req, res) {
         browser.close();
         return result;
     };
+
+    */
 
     scrape().then((value) => {
         // console.log(value);
