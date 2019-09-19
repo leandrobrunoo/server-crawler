@@ -4,7 +4,7 @@ const express = require('express');
 const PORT = process.env.PORT || 5000;
 
 app = express();
-app.get('/placares-old', function (req, res) {
+app.get('/stsbet', function (req, res) {
 
     let scrape = async () => {
         const browser = await puppeteer.launch({
@@ -22,30 +22,43 @@ app.get('/placares-old', function (req, res) {
         const page = await browser.newPage();
     //    await page.setUserAgent('5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36');
     
-        await page.goto('https://play.livebet.com/#/results/?lang=pt-br', { waitUntil : ['load', 'domcontentloaded']});
+        await page.goto('https://www.stsbet.co.uk/in-play#/results', { waitUntil : ['load', 'domcontentloaded']});
         await page.waitFor(15000);
  
         const result = await page.evaluate(() => {
 
             let data = [];
-            let elements = [...document.querySelectorAll('body > div.body-wrapper.lang-pt-br.results.theme-.livebet.playlivebetcom.classic.footer-movable > div.view-container.results > ng-include > div > div.center-container-p > div > div.results-table-j > table > tbody > tr')]; // Select all Products
+            let elements = [...document.querySelectorAll('#ember7 > div.results-events > div.results-events-body > div.results-events-body-inner > div.ember-view > div.results-events-match')];
             
-            elements.shift();
+            // elements.shift();
 
             for (var element of elements) {
-                if (element.innerText != 'No information available' && element.innerText != 'Void') {
+            //    let partida = {};  
+            //    partida.data = element.innerText;
+            //    data.push(partida);
+                
+            //    if (element.innerText != 'No information available' && element.innerText != 'Void') {
                     let partida = {};
-                    partida.data = element.innerText.split('\t')[0].replace(/(\r\n|\n|\r)/gm, '');
-                    partida.campeonato = element.innerText.split('\t')[1].replace(/(\r\n|\n|\r)/gm, '');
-                    partida.timeCasa = element.innerText.split('\t')[2].split(' - ')[0].replace(/(\r\n|\n|\r)/gm, '');
-                    partida.timeFora = element.innerText.split('\t')[2].split(' - ')[1].replace(/(\r\n|\n|\r)/gm, '');
-                    partida.primeiroTempo = element.innerText.replace(/(\r\n|\n|\r)/gm, '').split('\t')[3].split(' ')[1];
-                    partida.placarFinal = element.innerText.split('\t')[3].split(' ')[0].replace(/(\r\n|\n|\r)/gm, '');
+                    partida.data = element.innerText.split('\n')[0];
+                    partida.campeonato = element.innerText.split('\n')[1];
+                    partida.timeCasa = element.innerText.split('\n')[2].split(' - ')[0];
+                    partida.timeFora = element.innerText.split('\n')[2].split(' - ')[1];
+                    
+                    partida.primeiroTempo = element.innerText.split('\n')[3].split(' ')[1];
+                    partida.primeiroTempo = partida.primeiroTempo.replace('(','');
+                    partida.primeiroTempo = partida.primeiroTempo.replace(')','');
+                    partida.primeiroTempo = partida.primeiroTempo.replace(':','-');
+                    
+                    partida.placarFinal = element.innerText.split('\n')[3].split(' ')[0];
+                    partida.placarFinal = partida.placarFinal.replace(':','-');
+                    
+                    partida.segundoTempo = "";
 
-                    if(partida.placarFinal != 'Void'){
+                //    if(partida.placarFinal != 'Void'){
                         data.push(partida);
-                    }
-                }
+                  //  }
+              //  }
+            
             }
             return data;
         });
@@ -81,11 +94,9 @@ app.get('/placares', function (req, res) {
         const browser = await puppeteer.launch({
             headless: true,
             defaultViewport: null,
-            slowMo:10,
             args: [
                 '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--account-consistency'
+                '--disable-setuid-sandbox'
             ]
         },
         //{
@@ -94,13 +105,6 @@ app.get('/placares', function (req, res) {
         );
 
         const page = await browser.newPage();
-      //  await page.addScriptTag({url: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.7.7/angular.min.js?v=1.7.7'})
-      //  await page.addScriptTag({url: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.7.7/angular-route.min.js?v=1.7.7'})
-      //  await page.addScriptTag({url: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.7.7/angular-animate.min.js?v=1.7.7'})
-      //  await page.addScriptTag({url: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.7.7/angular-cookies.min.js?v=1.7.7'})
-      //  await page.addScriptTag({url: 'https://ajax.cloudflare.com/cdn-cgi/scripts/95c75768/cloudflare-static/rocket-loader.min.js'})
-  
-    //    await page.setCookie({}, {});
 
         await page.setViewport({ width: 1280, height: 800 });
         await page.goto('https://play.livebet.com/#/results/?lang=pt-br', 
@@ -163,14 +167,13 @@ app.get('/placares', function (req, res) {
 
     
     scrape().then((value) => {
-        // console.log(value);
-        res.send('[]');
+        console.log(value);
+        res.send(value);
     }).catch(e => {
         res.send(e);
     });
-       */
-
-      res.send('[]');
+    */
+   res.send('[{}]');
 
 });
 
@@ -303,7 +306,7 @@ app.get('/livescore', function (req, res) {
 
     scrape().then((value) => {
     //    console.log(value);
-    console.log("7) "+  new Date().toString());
+   // console.log("7) "+  new Date().toString());
     /**
         console.log("1) "+  new Date().toDateString());
         console.log("2) "+  new Date().toISOString());
