@@ -22,25 +22,30 @@ app.get('/stsbet', function (req, res) {
         const page = await browser.newPage();
     //    await page.setUserAgent('5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36');
     
-        await page.goto('https://www.stsbet.co.uk/in-play#/results', { waitUntil : ['load', 'domcontentloaded']});
+        await page.goto('https://www.stsbet.co.uk/in-play#/results', 
+        { waitUntil : ['load', 'domcontentloaded']});
         await page.waitFor(15000);
+
+        console.log('Pagina carregada.');
  
         const result = await page.evaluate(() => {
 
             let data = [];
-            let elements = [...document.querySelectorAll('#ember7 > div.results-events > div.results-events-body > div.results-events-body-inner > div.ember-view > div.results-events-match')];
-            
+            let elements = [...document.querySelectorAll('#ember7 > div.results-events > div.results-events-body > div.results-events-body-inner > div.ember-view > div.results-events-match')]; // > div.ember-view > div.results-events-match
             // elements.shift();
 
             for (var element of elements) {
-            //    let partida = {};  
-            //    partida.data = element.innerText;
-            //    data.push(partida);
-                
-            //    if (element.innerText != 'No information available' && element.innerText != 'Void') {
-                    let partida = {};
-                    partida.data = element.innerText.split('\n')[0];
-                    partida.campeonato = element.innerText.split('\n')[1];
+               // let partida = {};
+               // partida.data = element.innerText;
+               // data.push(partida);
+               
+               //    if (element.innerText != 'No information available' && element.innerText != 'Void') {
+                   
+                   if(element.innerText.split('\n')[3] != 'Void'){
+             
+             let partida = {};
+             partida.data = element.innerText.split('\n')[0];
+             partida.campeonato = element.innerText.split('\n')[1];
                     partida.timeCasa = element.innerText.split('\n')[2].split(' - ')[0];
                     partida.timeFora = element.innerText.split('\n')[2].split(' - ')[1];
                     
@@ -53,13 +58,21 @@ app.get('/stsbet', function (req, res) {
                     partida.placarFinal = partida.placarFinal.replace(':','-');
                     
                     partida.segundoTempo = "";
-
-                //    if(partida.placarFinal != 'Void'){
-                        data.push(partida);
+                    
+                    data.push(partida);
+                }
+                    
+                    
+                    //    if(partida.placarFinal != 'Void'){
+                        //    let p = {};
+                        //    p.html = element.innerText;
+                        //    data.push(p);
                   //  }
-              //  }
+                }
             
-            }
+          //  }
+
+            console.log('sair for');
             return data;
         });
         browser.close();
