@@ -41,23 +41,25 @@ app.get('/stsbet', function (req, res) {
                
                //    if (element.innerText != 'No information available' && element.innerText != 'Void') {
                    
-                   if(element.innerText.split('\n')[3] != 'Void'){
+                   if(element.innerText.split('\n')[3] != 'Void' && 
+                   element.innerText.split('\n')[3].split(' ').length == 2){
              
              let partida = {};
-             partida.data = element.innerText.split('\n')[0];
-             partida.campeonato = element.innerText.split('\n')[1];
-                    partida.timeCasa = element.innerText.split('\n')[2].split(' - ')[0];
-                    partida.timeFora = element.innerText.split('\n')[2].split(' - ')[1];
-                    
-                    partida.primeiroTempo = element.innerText.split('\n')[3].split(' ')[1];
-                    partida.primeiroTempo = partida.primeiroTempo.replace('(','');
-                    partida.primeiroTempo = partida.primeiroTempo.replace(')','');
-                    partida.primeiroTempo = partida.primeiroTempo.replace(':','-');
-                    
-                    partida.placarFinal = element.innerText.split('\n')[3].split(' ')[0];
-                    partida.placarFinal = partida.placarFinal.replace(':','-');
-                    
-                    partida.segundoTempo = "";
+                partida.data = element.innerText.split('\n')[0];
+                partida.campeonato = element.innerText.split('\n')[1];
+
+                partida.timeCasa = element.innerText.split('\n')[2].split(' - ')[0];
+                partida.timeFora = element.innerText.split('\n')[2].split(' - ')[1];
+                
+                partida.primeiroTempo = element.innerText.split('\n')[3].split(' ')[1];
+                partida.primeiroTempo = partida.primeiroTempo.replace('(','');
+                partida.primeiroTempo = partida.primeiroTempo.replace(')','');
+                partida.primeiroTempo = partida.primeiroTempo.replace(':','-');
+                
+                partida.segundoTempo = "";
+
+                partida.placarFinal = element.innerText.split('\n')[3].split(' ')[0];
+                partida.placarFinal = partida.placarFinal.replace(':','-');
                     
                     data.push(partida);
                 }
