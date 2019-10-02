@@ -42,7 +42,9 @@ app.get('/stsbet', function (req, res) {
                //    if (element.innerText != 'No information available' && element.innerText != 'Void') {
                    
                    if(element.innerText.split('\n')[3] != 'Void' && 
-                   element.innerText.split('\n')[3].split(' ').length == 2){
+                   element.innerText.split('\n')[3].split(' ').length == 2 &&
+                   element.innerText.split('\n')[1] != 'Fouls and shots on Goal' &&
+                   element.innerText.split('\n')[1] != 'Cards and Corners'){
              
              let partida = {};
                 partida.data = element.innerText.split('\n')[0];
