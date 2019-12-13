@@ -1,6 +1,9 @@
 const puppeteer = require('puppeteer');
 const express = require('express');
 
+var request = require('request');
+var moment = require('moment');
+
 const PORT = process.env.PORT || 5000;
 
 app = express();
@@ -105,7 +108,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/placares', function (req, res) {
-
+    
     /*
     let scrape = async () => {
         const browser = await puppeteer.launch({
@@ -118,18 +121,19 @@ app.get('/placares', function (req, res) {
         },
         //{
         //    executablePath: 'C:/Users/Leandro/AppData/Local/Google/Chrome/Application'
-       // }
+        // }
         );
-
+        
         const page = await browser.newPage();
-
+        
         await page.setViewport({ width: 1280, height: 800 });
         await page.goto('https://play.livebet.com/#/results/?lang=pt-br', 
         { waitUntil : ['load', 'domcontentloaded']});
-        // await page.waitFor(12000);
+        
+    //    await page.waitFor(12000);
         await page.waitForResponse();
         console.log('Site carregado!');
-
+        
         const selectorData = 'body > div.body-wrapper.lang-pt-br.results.theme-.livebet.playlivebetcom.classic.footer-movable > div.view-container.results > ng-include > div > div.center-container-p > div > div.navigation-of-results-j > div:nth-child(1) > ul > li:nth-child(3) > div > div > div > input';
         await page.waitForSelector(selectorData);
         console.log('Agora vou clicar!');
@@ -137,7 +141,7 @@ app.get('/placares', function (req, res) {
         await page.keyboard.press('ArrowLeft');
         await page.keyboard.press('Enter');
         await page.waitFor(3000);
-
+        
         console.log('sport');
         const selectSport = 'body > div.body-wrapper.lang-pt-br.results.theme-.livebet.playlivebetcom.classic.footer-movable > div.view-container.results > ng-include > div > div.center-container-p > div > div.navigation-of-results-j > div:nth-child(1) > ul > li:nth-child(1) > label > div > select';
         await page.waitForSelector(selectSport);
@@ -150,17 +154,17 @@ app.get('/placares', function (req, res) {
         
         const selectorPesquisar = 'body > div.body-wrapper.lang-pt-br.results.theme-.livebet.playlivebetcom.classic.footer-movable > div.view-container.results > ng-include > div > div.center-container-p > div > div.navigation-of-results-j > div.results-table-cell-j.button-container-j > button';
         await page.waitForSelector(selectorPesquisar);
-         console.log('Agora vou clicar na pesquisa!');
+        console.log('Agora vou clicar na pesquisa!');
         await page.click(selectorPesquisar);
         await page.waitFor(5000);
-
+        
         const result = await page.evaluate(() => {
-
+            
             let data = [];
             let elements = [...document.querySelectorAll('body > div.body-wrapper.lang-pt-br.results.theme-.livebet.playlivebetcom.classic.footer-movable > div.view-container.results > ng-include > div > div.center-container-p > div > div.results-table-j > table > tbody > tr')]; // Select all Products                            
             console.log(elements);    
             elements.shift();
-
+            
             for (var element of elements) {
                 if (element.innerText != 'No information available' && element.innerText != 'Void') {
                     let partida = {};
@@ -189,9 +193,10 @@ app.get('/placares', function (req, res) {
     }).catch(e => {
         res.send(e);
     });
+    
     */
-   res.send('[{}]');
-
+    res.send('[{}]');
+  
 });
 
 app.get('/msports', function (req, res) {
@@ -253,9 +258,9 @@ app.get('/msports', function (req, res) {
 
 
 
-
+/*
 app.get('/livescore', function (req, res) {
-
+    
     let scrape = async () => {
         const browser = await puppeteer.launch({
             headless: true,
@@ -265,28 +270,28 @@ app.get('/livescore', function (req, res) {
             ]
         }
         );
-
+        
         const page = await browser.newPage();
         await page.setViewport({ width: 1280, height: 800 });
-      
+        
         await page.goto('https://www.livescore.in/br/', 
         { waitUntil : ['load', 'domcontentloaded']});
         await page.waitFor(2000);
         console.log('Site carregado!');
-
+        
         const selector = '#tzactual';
         await page.waitForSelector(selector);
         //console.log('Agora vou clicar!');
         //await page.click(selector);
         await page.waitFor(1000);
-
+        
         const selectorUtc = '#tzcontent > li:nth-child(9) > a';
         await page.waitForSelector(selectorUtc);
         //console.log('Agora vou clicar UTC!');
         //await page.click(selectorUtc);
         
         //await page.waitFor(1000);
-
+        
         const result = await page.evaluate(() => {
             
             let data = [];
@@ -294,7 +299,7 @@ app.get('/livescore', function (req, res) {
             let elements = [...document.querySelectorAll('#fs > div > table > tbody > tr')];  
             
             for (var element of elements) {
-               if( element.innerText.split('\t')[1].replace(/(\r\n|\n|\r)/gm, '') == "Encerrado"){
+                if( element.innerText.split('\t')[1].replace(/(\r\n|\n|\r)/gm, '') == "Encerrado"){
                    let partida = {};
                    partida.data = new Date().toLocaleDateString().concat(" " + element.innerText.split('\t')[0].replace(/(\r\n|\n|\r)/gm, ''));
                    partida.timeCasa = element.innerText.split('\t')[2].replace(/(\r\n|\n|\r)/gm, '');
@@ -305,41 +310,85 @@ app.get('/livescore', function (req, res) {
                    
                    partida.primeiroTempo = partida.primeiroTempo.replace('(', '');
                    partida.primeiroTempo = partida.primeiroTempo.replace(')', '');
-                
+                   
                    partida.campeonato = '';
                    partida.segundoTempo = '';
-                  
+                   
                    data.push(partida);
                }
-                
+               
             }
-
+            
             return data;
         });
-
+        
         browser.close();
         return result;
     };
-
+    
     scrape().then((value) => {
-    //    console.log(value);
-   // console.log("7) "+  new Date().toString());
-    /**
-        console.log("1) "+  new Date().toDateString());
-        console.log("2) "+  new Date().toISOString());
-        console.log("3) "+  new Date().toJSON());
-        console.log("4) "+  new Date().toLocaleDateString());
-        console.log("5) "+  new Date().toLocaleString());
-        console.log("6) "+  new Date().toLocaleTimeString());
-        console.log("7) "+  new Date().toString());
-        console.log("8) "+  new Date().toISOString().slice(0,10));
-         */
+        //    console.log(value);
+        // console.log("7) "+  new Date().toString());
+        
+        // console.log("1) "+  new Date().toDateString());
+        // console.log("2) "+  new Date().toISOString());
+        // console.log("3) "+  new Date().toJSON());
+        // console.log("4) "+  new Date().toLocaleDateString());
+        // console.log("5) "+  new Date().toLocaleString());
+        // console.log("6) "+  new Date().toLocaleTimeString());
+        // console.log("7) "+  new Date().toString());
+        // console.log("8) "+  new Date().toISOString().slice(0,10));
+        
         res.send(value);
     }).catch(e => {
         res.send(e);
     });
-
 });
+*/
+
+app.get('/livescore', function(req, res) {
+
+    let data = moment(new Date()).format('YYYY-MM-DD');
+    // console.log(data);
+  
+    var urlTest = 'https://show10bet.cnf.bet/api/campeonatos?filter%5B%40jogo%5D%5Bhorario%5D%5B%24between%5D%5B%5D='+data+'T03%3A00%3A00.000Z&filter%5B%40jogo%5D%5Bhorario%5D%5B%24between%5D%5B%5D='+moment(new Date()).add(1, 'days').format('YYYY-MM-DD')+'T02%3A59%3A59.999Z&filter%5B%40jogo%5D%5B%24or%5D%5B0%5D%5BtimeAResultado%5D%5B%24not%5D=null&filter%5B%40jogo%5D%5B%24or%5D%5B0%5D%5BtimeBResultado%5D%5B%24not%5D=null&filter%5B%40jogo%5D%5B%24or%5D%5B1%5D%5BresultadoOpcoes%5D%5B%24not%5D=null&filter%5B%40jogo%5D%5Bativo%5D=1&filter%5Bativo%5D=1&include=jogos.cotacoes.apostaTipo&sort=nome';
+  
+    request(urlTest, function (error, response, body) {
+      //verificar se o gravatar existe - se ele não existe vai retornar 404 devido ao parametro passado ao api
+      if (!error && response.statusCode == 200) {
+        console.log('status é ok, achou');
+        
+        let jogosResponse = JSON.parse(body).jogos;
+        let data = [];
+  
+        if(jogosResponse != undefined) {
+  
+          for (var jogo of jogosResponse) {
+            let partida = {};
+            
+            partida.campeonato = '';
+            partida.timeCasa = jogo.timeANome;
+            partida.timeFora = jogo.timeBNome;
+  
+            partida.data = moment(new Date(jogo.horario)).format('DD/MM/YYYY HH:mm');
+            
+            partida.primeiroTempo = jogo.timeAResultado1Tempo +'-'+ jogo.timeBResultado1Tempo;
+            partida.segundoTempo = jogo.info.timeAResultado +'-'+ jogo.info.timeBResultado;
+            partida.placarFinal = jogo.timeAResultado +'-'+ jogo.timeBResultado;
+            
+            data.push(partida);
+          };
+        }
+          
+        res.send(data);
+  
+      } else if (!error && response.statusCode == 404) {
+        console.log('deu 404');
+        res.send('<h1>Não achou nada. :(</h1> <p>Impresso na tela '+response.statusCode+'</p>');
+      }
+    });
+  });
+
 
 // Execução do serviço
 app.listen(PORT);
