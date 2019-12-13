@@ -374,7 +374,7 @@ app.get('/livescore', function(req, res) {
             partida.timeCasa = jogo.timeANome;
             partida.timeFora = jogo.timeBNome;
   
-            partida.data = moment(new Date(jogo.horario)).format('DD/MM/YYYY HH:mm');
+            partida.data = moment(new Date(jogo.horario)).format('M/d/YYYY HH:mm');
             
             partida.primeiroTempo = jogo.timeAResultado1Tempo +'-'+ jogo.timeBResultado1Tempo;
             partida.segundoTempo = jogo.info.timeAResultado +'-'+ jogo.info.timeBResultado;
