@@ -262,8 +262,8 @@ app.get('/msports', function (req, res) {
 
 
 
-/*
-app.get('/livescore', function (req, res) {
+
+app.get('/livescore2', function (req, res) {
     
     let scrape = async () => {
         const browser = await puppeteer.launch({
@@ -348,7 +348,7 @@ app.get('/livescore', function (req, res) {
         res.send(e);
     });
 });
-*/
+
 
 app.get('/livescore', function(req, res) {
 
@@ -374,7 +374,7 @@ app.get('/livescore', function(req, res) {
             partida.timeCasa = jogo.timeANome;
             partida.timeFora = jogo.timeBNome;
   
-            partida.data = moment(new Date(jogo.horario)).format('M/d/YYYY HH:mm');
+            partida.data = moment(new Date(jogo.horario)).format('M/D/YYYY HH:mm');
             
             partida.primeiroTempo = jogo.timeAResultado1Tempo +'-'+ jogo.timeBResultado1Tempo;
             partida.segundoTempo = jogo.info.timeAResultado +'-'+ jogo.info.timeBResultado;
