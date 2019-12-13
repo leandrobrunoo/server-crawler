@@ -8,7 +8,8 @@ const PORT = process.env.PORT || 5000;
 
 app = express();
 app.get('/stsbet', function (req, res) {
-
+    
+    /*
     let scrape = async () => {
         const browser = await puppeteer.launch({
             headless: true,
@@ -17,14 +18,14 @@ app.get('/stsbet', function (req, res) {
                 '--disable-setuid-sandbox'
             ]
         },
-        /*{
-            executablePath: 'C:/Users/Leandro/AppData/Local/Google/Chrome/Application'
-        }*/
+        //{
+        //    executablePath: 'C:/Users/Leandro/AppData/Local/Google/Chrome/Application'
+       // }
         );
-
+        
         const page = await browser.newPage();
-    //    await page.setUserAgent('5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36');
-    
+        //    await page.setUserAgent('5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36');
+        
         await page.goto('https://www.stsbet.co.uk/in-play#/results', 
         { waitUntil : ['load', 'domcontentloaded']});
         await page.waitFor(15000);
@@ -92,7 +93,8 @@ app.get('/stsbet', function (req, res) {
     }).catch(e => {
         res.send(e);
     });
-
+     */
+    res.send('[{}]');
 });
 
 app.get('/', function (req, res) {
@@ -201,6 +203,7 @@ app.get('/placares', function (req, res) {
 
 app.get('/msports', function (req, res) {
 
+    /*
     let scrape = async () => {
         const browser = await puppeteer.launch({
             headless: true,
@@ -210,17 +213,17 @@ app.get('/msports', function (req, res) {
             ]
         }
         );
-
+        
         const page = await browser.newPage();
         await page.setViewport({ width: 1280, height: 800 });
-      
+        
         await page.goto('https://msports.online/resultado', 
         { waitUntil : ['load', 'domcontentloaded']});
         await page.waitFor(1500);
         console.log('Site carregado!');
         
         const result = await page.evaluate(() => {
-
+            
             let data = [];
             let elements = [...document.querySelectorAll('body > main > div.container > div > div > div > div.custom-card-action.resultado-content > div:nth-child(2) > div > table > tbody > tr')];  
             
@@ -233,23 +236,24 @@ app.get('/msports', function (req, res) {
                 partida.primeiroTempo = element.innerText.split('\t')[3].replace(/(\r\n|\n|\r)/gm, '');
                 partida.segundoTempo = element.innerText.split('\t')[4].replace(/(\r\n|\n|\r)/gm, '');
                 partida.placarFinal = element.innerText.split('\t')[5].replace(/(\r\n|\n|\r)/gm, '');
-
+                
                 data.push(partida);
             }
-
+            
             return data;
         });
         browser.close();
         return result;
     };
-
+    
     scrape().then((value) => {
-    //    console.log(value);
+        //    console.log(value);
         res.send(value);
     }).catch(e => {
         res.send(e);
     });
-
+    */
+   res.send('[{}]');
 });
 
 
