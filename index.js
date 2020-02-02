@@ -25,23 +25,25 @@ app.get('/show10bet', function (req, res) {
   
     var urlTest = 'https://show10bet.cnf.bet/api/campeonatos?filter%5B%40jogo%5D%5Bhorario%5D%5B%24between%5D%5B%5D='+data+'T03%3A00%3A00.000Z&filter%5B%40jogo%5D%5Bhorario%5D%5B%24between%5D%5B%5D='+moment(new Date()).add(1, 'days').format('YYYY-MM-DD')+'T02%3A59%3A59.999Z&filter%5B%40jogo%5D%5B%24or%5D%5B0%5D%5BtimeAResultado%5D%5B%24not%5D=null&filter%5B%40jogo%5D%5B%24or%5D%5B0%5D%5BtimeBResultado%5D%5B%24not%5D=null&filter%5B%40jogo%5D%5B%24or%5D%5B1%5D%5BresultadoOpcoes%5D%5B%24not%5D=null&filter%5B%40jogo%5D%5Bativo%5D=1&filter%5Bativo%5D=1&include=jogos.cotacoes.apostaTipo&sort=nome';
   
-    request(urlTest, function (error, response, body) {
-      //verificar se o gravatar existe - se ele não existe vai retornar 404 devido ao parametro passado ao api
-      if (!error && response.statusCode == 200) {
-      //  console.log('status é ok, achou');
-        
-        let jogosResponse = JSON.parse(body).jogos;
-        let data = [];
-  
-        if(jogosResponse != undefined) {
-  
+    /**
+     
+     request(urlTest, function (error, response, body) {
+       //verificar se o gravatar existe - se ele não existe vai retornar 404 devido ao parametro passado ao api
+       if (!error && response.statusCode == 200) {
+         //  console.log('status é ok, achou');
+         
+         let jogosResponse = JSON.parse(body).jogos;
+         let data = [];
+         
+         if(jogosResponse != undefined) {
+           
           for (var jogo of jogosResponse) {
             let partida = {};
             
             partida.campeonato = '';
             partida.timeCasa = jogo.timeANome;
             partida.timeFora = jogo.timeBNome;
-  
+            
             partida.data = moment(new Date(jogo.horario)).format('M/D/YYYY HH:mm');
             
             partida.primeiroTempo = jogo.timeAResultado1Tempo +'-'+ jogo.timeBResultado1Tempo;
@@ -51,14 +53,16 @@ app.get('/show10bet', function (req, res) {
             data.push(partida);
           };
         }
-          
+        
         res.send(data);
-  
+        
       } else if (!error && response.statusCode == 404) {
-      //  console.log('deu 404');
+        //  console.log('deu 404');
         res.send('<h1>Não achou nada. :(</h1> <p>Impresso na tela '+response.statusCode+'</p>');
       }
     });
+     */
+    res.send([]);
 
 });
 
