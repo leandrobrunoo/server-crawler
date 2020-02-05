@@ -212,7 +212,7 @@ app.get('/stsbet', function (req, res) {
         
         await page.goto('https://www.stsbet.co.uk/in-play#/results', 
         { waitUntil : ['load', 'domcontentloaded']});
-        await page.waitFor(18000);
+        await page.waitFor(20000);
 
         console.log('Pagina carregada.');
  
