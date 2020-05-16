@@ -23,7 +23,7 @@ app.get('/show10bet', function (req, res) {
     let data = moment(new Date()).format('YYYY-MM-DD');
     // console.log(data);
   
-    var urlTest = 'https://acertebet.cnf.bet/api/campeonatos?filter%5B%40jogo%5D%5Bhorario%5D%5B%24between%5D%5B%5D='+data+'T03%3A00%3A00.000Z&filter%5B%40jogo%5D%5Bhorario%5D%5B%24between%5D%5B%5D='+moment(new Date()).add(1, 'days').format('YYYY-MM-DD')+'T02%3A59%3A59.999Z&filter%5B%40jogo%5D%5B%24or%5D%5B0%5D%5BtimeAResultado%5D%5B%24not%5D=null&filter%5B%40jogo%5D%5B%24or%5D%5B0%5D%5BtimeBResultado%5D%5B%24not%5D=null&filter%5B%40jogo%5D%5B%24or%5D%5B1%5D%5BresultadoOpcoes%5D%5B%24not%5D=null&filter%5B%40jogo%5D%5Bativo%5D=1&filter%5Bativo%5D=1&include=jogos.cotacoes.apostaTipo&sort=nome';
+    var urlTest = 'https://demo.cnf.bet/api/campeonatos?filter%5B%40jogo%5D%5Bhorario%5D%5B%24between%5D%5B%5D='+data+'T03%3A00%3A00.000Z&filter%5B%40jogo%5D%5Bhorario%5D%5B%24between%5D%5B%5D='+moment(new Date()).add(1, 'days').format('YYYY-MM-DD')+'T02%3A59%3A59.999Z&filter%5B%40jogo%5D%5B%24or%5D%5B0%5D%5BtimeAResultado%5D%5B%24not%5D=null&filter%5B%40jogo%5D%5B%24or%5D%5B0%5D%5BtimeBResultado%5D%5B%24not%5D=null&filter%5B%40jogo%5D%5B%24or%5D%5B1%5D%5BresultadoOpcoes%5D%5B%24not%5D=null&filter%5B%40jogo%5D%5Bativo%5D=1&filter%5Bativo%5D=1&include=jogos.cotacoes.apostaTipo&sort=nome';
   
      request(urlTest, function (error, response, body) {
        //verificar se o gravatar existe - se ele não existe vai retornar 404 devido ao parametro passado ao api
@@ -194,6 +194,8 @@ app.get('/livescore', function (req, res) {
 
 app.get('/stsbet', function (req, res) {
     
+  /**
+   
     let scrape = async () => {
         const browser = await puppeteer.launch({
             headless: true,
@@ -275,8 +277,10 @@ app.get('/stsbet', function (req, res) {
     }).catch(e => {
         res.send(e);
     });
+
+    */
     
- //   res.send('[{}]');
+    res.send('[{}]');
 });
 
 // Execução do serviço
