@@ -1,141 +1,146 @@
-const puppeteer = require('puppeteer');
-const express = require('express');
+const puppeteer = require('puppeteer')
+const express = require('express')
 
-var request = require('request');
-var moment = require('moment');
+var request = require('request')
+var moment = require('moment')
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000
 
-app = express();
+app = express()
 
 app.get('/', function (req, res) {
-    res.send({
-        "name": "server-crawler",
-        "version": "1.3.1",
-        "developer": "Leandro Bruno Teixeira",
-        "endpoint": ["show10bet", "stsbet", "livescore"]
-    }
-    );
-});
+  res.send({
+    name: 'server-crawler',
+    version: '1.3.1',
+    developer: 'Leandro Bruno Teixeira',
+    endpoint: ['show10bet', 'stsbet', 'livescore']
+  })
+})
 
 app.get('/show10bet', function (req, res) {
-    
-    let data = moment(new Date()).format('YYYY-MM-DD');
-    // console.log(data);
-  
-    var urlTest = 'https://demo.cnf.bet/api/campeonatos?filter%5B%40jogo%5D%5Bhorario%5D%5B%24between%5D%5B%5D='+data+'T03%3A00%3A00.000Z&filter%5B%40jogo%5D%5Bhorario%5D%5B%24between%5D%5B%5D='+moment(new Date()).add(1, 'days').format('YYYY-MM-DD')+'T02%3A59%3A59.999Z&filter%5B%40jogo%5D%5B%24or%5D%5B0%5D%5BtimeAResultado%5D%5B%24not%5D=null&filter%5B%40jogo%5D%5B%24or%5D%5B0%5D%5BtimeBResultado%5D%5B%24not%5D=null&filter%5B%40jogo%5D%5B%24or%5D%5B1%5D%5BresultadoOpcoes%5D%5B%24not%5D=null&filter%5B%40jogo%5D%5Bativo%5D=1&filter%5Bativo%5D=1&include=jogos.cotacoes.apostaTipo&sort=nome';
-  
-     request(urlTest, function (error, response, body) {
-       //verificar se o gravatar existe - se ele não existe vai retornar 404 devido ao parametro passado ao api
-       if (!error && response.statusCode == 200) {
-         //  console.log('status é ok, achou');
-         
-         let jogosResponse = JSON.parse(body).jogos;
-         let data = [];
-         
-         if(jogosResponse != undefined) {
-           
-          for (var jogo of jogosResponse) {
-            let partida = {};
-            
-            partida.campeonato = '';
-            partida.timeCasa = jogo.timeANome;
-            partida.timeFora = jogo.timeBNome;
-            
-            partida.data = moment(new Date(jogo.horario)).format('M/D/YYYY HH:mm');
-            
-            partida.primeiroTempo = jogo.timeAResultado1Tempo +'-'+ jogo.timeBResultado1Tempo;
-            partida.segundoTempo = jogo.info.timeAResultado +'-'+ jogo.info.timeBResultado;
-            partida.placarFinal = jogo.timeAResultado +'-'+ jogo.timeBResultado;
-            
-            data.push(partida);
-          };
-        }
-        
-        res.send(data);
-        
-      } else if (!error && response.statusCode == 404) {
-        //  console.log('deu 404');
-        res.send('<h1>Não achou nada. :(</h1> <p>Impresso na tela '+response.statusCode+'</p>');
-      }
-    });
+  let data = moment(new Date()).format('YYYY-MM-DD')
+  // console.log(data);
 
-});
+  var urlTest =
+    'https://demo.cnf.bet/api/campeonatos?filter%5B%40jogo%5D%5Bhorario%5D%5B%24between%5D%5B%5D=' +
+    data +
+    'T03%3A00%3A00.000Z&filter%5B%40jogo%5D%5Bhorario%5D%5B%24between%5D%5B%5D=' +
+    moment(new Date()).add(1, 'days').format('YYYY-MM-DD') +
+    'T02%3A59%3A59.999Z&filter%5B%40jogo%5D%5B%24or%5D%5B0%5D%5BtimeAResultado%5D%5B%24not%5D=null&filter%5B%40jogo%5D%5B%24or%5D%5B0%5D%5BtimeBResultado%5D%5B%24not%5D=null&filter%5B%40jogo%5D%5B%24or%5D%5B1%5D%5BresultadoOpcoes%5D%5B%24not%5D=null&filter%5B%40jogo%5D%5Bativo%5D=1&filter%5Bativo%5D=1&include=jogos.cotacoes.apostaTipo&sort=nome'
+
+  request(urlTest, function (error, response, body) {
+    //verificar se o gravatar existe - se ele não existe vai retornar 404 devido ao parametro passado ao api
+    if (!error && response.statusCode == 200) {
+      //  console.log('status é ok, achou');
+
+      let jogosResponse = JSON.parse(body).jogos
+      let data = []
+
+      if (jogosResponse != undefined) {
+        for (var jogo of jogosResponse) {
+          let partida = {}
+
+          partida.campeonato = ''
+          partida.timeCasa = jogo.timeANome
+          partida.timeFora = jogo.timeBNome
+
+          partida.data = moment(new Date(jogo.horario)).format('M/D/YYYY HH:mm')
+
+          partida.primeiroTempo =
+            jogo.timeAResultado1Tempo + '-' + jogo.timeBResultado1Tempo
+          partida.segundoTempo =
+            jogo.info.timeAResultado + '-' + jogo.info.timeBResultado
+          partida.placarFinal = jogo.timeAResultado + '-' + jogo.timeBResultado
+
+          data.push(partida)
+        }
+      }
+
+      res.send(data)
+    } else if (!error && response.statusCode == 404) {
+      //  console.log('deu 404');
+      res.send(
+        '<h1>Não achou nada. :(</h1> <p>Impresso na tela ' +
+          response.statusCode +
+          '</p>'
+      )
+    }
+  })
+})
 
 app.get('/livescore', function (req, res) {
-    
   let scrape = async () => {
-      const browser = await puppeteer.launch({
-          headless: true,
-          args: [
-              '--no-sandbox',
-              '--disable-setuid-sandbox'
-          ]
-      }
-      );
-      
-      const page = await browser.newPage();
-      await page.setViewport({ width: 1280, height: 800 });
-      
-      await page.goto('https://www.livescore.in/br/', 
-      { waitUntil : ['load', 'domcontentloaded']});
-      
-      await page.waitFor(2000);
-      console.log('Site carregado!');
-      
-      const selector = '#live-table > div.tabs > div.tabs__group > div:nth-child(5)';
-      await page.waitForSelector(selector);
-      
-      console.log('click no encerrados');
-      await page.click(selector);
-      await page.waitFor(1000);
-    
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    })
+
+    const page = await browser.newPage()
+    await page.setViewport({ width: 1280, height: 800 })
+
+    await page.goto('https://www.livescore.in/br/', {
+      waitUntil: ['load', 'domcontentloaded']
+    })
+
+    await page.waitFor(2000)
+    console.log('Site carregado!')
+
+    const selector =
+      '#live-table > div.tabs > div.tabs__group > div:nth-child(5)'
+    await page.waitForSelector(selector)
+
+    console.log('click no encerrados')
+    await page.click(selector)
+    await page.waitFor(1000)
+
     //  console.log('click voltar uma data');
     //  await page.click('#live-table > div.tabs > div.calendar > div:nth-child(1) > div');
     //  await page.waitFor(5000);
 
-      const selectorUtc = '#live-table > div.event > div > div';
-      await page.waitForSelector(selectorUtc);
-      
-      const selectOptions = await page.$$eval('.event__match', options => {
-        return options.map(option => option.innerText ) 
-      });
+    const selectorUtc = '#live-table > div.event > div > div'
+    await page.waitForSelector(selectorUtc)
+
+    const selectOptions = await page.$$eval('.event__match', options => {
+      return options.map(option => option.innerText)
+    })
 
     //  console.log(selectOptions);
-      
-      let placares = [];
-      for (var element of selectOptions) {
-        
-          if( element.split('\n')[0] === "Encerrado") {
-          //  console.log(element);
-            let partida = {};
-            partida.campeonato = '';
+
+    let placares = []
+    for (var element of selectOptions) {
+      if (element.split('\n')[0] === 'Encerrado') {
+        //  console.log(element);
+        let partida = {}
+        partida.campeonato = ''
         //    partida.data = new Date().toLocaleDateString().concat(" " + element.innerText.split('\t')[0].replace(/(\r\n|\n|\r)/gm, ''));
-            partida.timeCasa = element.split('\n')[1];
-            partida.timeFora = element.split('\n')[5];
-            partida.primeiroTempo = element.split('\n')[6];
-            partida.segundoTempo = '';
-            partida.placarFinal = element.split('\n')[2] +'-'+ element.split('\n')[4];
-            
-            if(partida.primeiroTempo !== undefined){
-              partida.primeiroTempo = partida.primeiroTempo.replace('(', '');
-              partida.primeiroTempo = partida.primeiroTempo.replace(')', '');
-              partida.primeiroTempo = partida.primeiroTempo.split('-')[0].replace(' ','').trim() +"-"+partida.primeiroTempo.split('-')[1].replace(' ','').trim();
+        partida.timeCasa = element.split('\n')[1]
+        partida.timeFora = element.split('\n')[5]
+        partida.primeiroTempo = element.split('\n')[6]
+        partida.segundoTempo = ''
+        partida.placarFinal =
+          element.split('\n')[2] + '-' + element.split('\n')[4]
 
-            //  console.log(partida.primeiroTempo.split('-')[0].replace(' ','').trim() +"-"+partida.primeiroTempo.split('-')[1].replace(' ','').trim());
+        if (partida.primeiroTempo !== undefined) {
+          partida.primeiroTempo = partida.primeiroTempo.replace('(', '')
+          partida.primeiroTempo = partida.primeiroTempo.replace(')', '')
+          partida.primeiroTempo =
+            partida.primeiroTempo.split('-')[0].replace(' ', '').trim() +
+            '-' +
+            partida.primeiroTempo.split('-')[1].replace(' ', '').trim()
 
-              placares.push(partida);
+          //  console.log(partida.primeiroTempo.split('-')[0].replace(' ','').trim() +"-"+partida.primeiroTempo.split('-')[1].replace(' ','').trim());
 
-              //  console.log(partida.primeiroTempo);
-            }
+          placares.push(partida)
 
+          //  console.log(partida.primeiroTempo);
         }
       }
+    }
 
-      browser.close();
-      return placares;
+    browser.close()
+    return placares
 
-      /**
+    /**
       const result = await page.evaluate(() => {
           
           let data = [];
@@ -168,15 +173,16 @@ app.get('/livescore', function (req, res) {
             return data;
         });
           */
-      
+
     //  browser.close();
     //  return result;
-  };
-  
-  scrape().then((value) => {
+  }
+
+  scrape()
+    .then(value => {
       //    console.log(value);
       // console.log("7) "+  new Date().toString());
-      
+
       // console.log("1) "+  new Date().toDateString());
       // console.log("2) "+  new Date().toISOString());
       // console.log("3) "+  new Date().toJSON());
@@ -185,15 +191,15 @@ app.get('/livescore', function (req, res) {
       // console.log("6) "+  new Date().toLocaleTimeString());
       // console.log("7) "+  new Date().toString());
       // console.log("8) "+  new Date().toISOString().slice(0,10));
-      
-      res.send(value);
-  }).catch(e => {
-      res.send(e);
-  });
-});
+
+      res.send(value)
+    })
+    .catch(e => {
+      res.send(e)
+    })
+})
 
 app.get('/stsbet', function (req, res) {
-    
   /**
    
     let scrape = async () => {
@@ -279,11 +285,78 @@ app.get('/stsbet', function (req, res) {
     });
 
     */
-    
-    res.send('[{}]');
-});
+
+  res.send('[{}]')
+})
+
+app.get('/lotofacil', function (req, res) {
+  let scrape = async () => {
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    })
+
+    const page = await browser.newPage()
+    await page.setViewport({ width: 1280, height: 800 })
+
+    await page.goto(
+      'https://loterias.caixa.gov.br/wps/portal/loterias/landing/lotofacil/!ut/p/a1/04_Sj9CPykssy0xPLMnMz0vMAfGjzOLNDH0MPAzcDbz8vTxNDRy9_Y2NQ13CDA0sTIEKIoEKnN0dPUzMfQwMDEwsjAw8XZw8XMwtfQ0MPM2I02-AAzgaENIfrh-FqsQ9wBmoxN_FydLAGAgNTKEK8DkRrACPGwpyQyMMMj0VAcySpRM!/dl5/d5/L2dBISEvZ0FBIS9nQSEh/pw/Z7_HGK818G0K85260Q5OIRSC42046/res/id=historicoHTML/c=cacheLevelPage/=/',
+      { waitUntil: ['load', 'domcontentloaded'] }
+    )
+
+    const selectorUtc = 'body > table'
+    await page.waitForSelector(selectorUtc)
+
+    const selectOptions = await page.$$eval(
+      'body > table > tbody > tr',
+      options => {
+        return options.map(option => option.innerText)
+      }
+    )
+
+    let concursos = []
+    for (var element of selectOptions) {
+      let concurso = {}
+      concurso.numero = element.split('\t')[0]
+      concurso.data = element.split('\t')[1]
+      concurso.bolas = []
+      concurso.bolas.push(element.split('\t')[2])
+      concurso.bolas.push(element.split('\t')[3])
+      concurso.bolas.push(element.split('\t')[4])
+      concurso.bolas.push(element.split('\t')[5])
+      concurso.bolas.push(element.split('\t')[6])
+      concurso.bolas.push(element.split('\t')[7])
+      concurso.bolas.push(element.split('\t')[8])
+      concurso.bolas.push(element.split('\t')[9])
+      concurso.bolas.push(element.split('\t')[10])
+      concurso.bolas.push(element.split('\t')[11])
+      concurso.bolas.push(element.split('\t')[12])
+      concurso.bolas.push(element.split('\t')[13])
+      concurso.bolas.push(element.split('\t')[14])
+      concurso.bolas.push(element.split('\t')[15])
+      concurso.bolas.push(element.split('\t')[16])
+
+      concursos.push(concurso)
+    }
+
+    console.log(concursos)
+
+    browser.close()
+    return concursos
+  }
+
+  scrape()
+    .then(value => {
+      //    console.log(value);
+
+      res.send(value)
+    })
+    .catch(e => {
+      res.send(e)
+    })
+})
 
 // Execução do serviço
-app.listen(PORT);
-console.log(`Listening on ${PORT}`);
-exports = module.exports = app;
+app.listen(PORT)
+console.log(`Listening on ${PORT}`)
+exports = module.exports = app
